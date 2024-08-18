@@ -36,13 +36,18 @@ export default function Login() {
   };
 
   return (
-<Container maxWidth="xs" sx={{ 
-  backgroundColor: 'rgba(255, 255, 255, 0.9)', 
-  padding: 3, 
-  borderRadius: 2, 
-  boxShadow: 3,
-  marginTop: 4
-}}>      <Typography variant="h4" component="h1" gutterBottom>
+    <Container 
+      maxWidth="xs" 
+      sx={{ 
+        backgroundColor: 'rgba(255, 255, 255, .5)', 
+        padding: 3, 
+        borderRadius: 2, 
+        boxShadow: 3, 
+        marginTop: 4, 
+        backdropFilter: 'blur(10px)', // Apply blur effect within the box
+      }}
+    >
+      <Typography variant="h4" component="h1" gutterBottom>
         Login / Sign Up
       </Typography>
       <form>
@@ -85,4 +90,4 @@ export default function Login() {
       </form>
     </Container>
   );
-}
+} 

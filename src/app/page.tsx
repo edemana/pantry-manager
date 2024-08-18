@@ -120,14 +120,14 @@ export default function Home() {
 
 
   return (
-    <div style={{ backgroundImage: 'url(background.jpg)', backgroundSize: 'cover', backdropFilter: '8px', height: '100vh' }}>
 <Container maxWidth="sm" sx={{ 
-  backgroundImage: 'url("background.jpg")',
-  backgroundColor: 'rgba(255, 255, 255, 0.9)', 
+  backgroundColor: 'rgba(255, 255, 255, 0.5)', 
   padding: 3, 
   borderRadius: 2, 
   boxShadow: 3,
-  marginTop: 4
+  marginTop: 4,
+  backdropFilter: 'blur(15px)', // Apply blur effect within the box
+
 }}>        <Typography variant="h4" component="h1" gutterBottom>
           Pantry Manager
         </Typography>
@@ -172,6 +172,5 @@ export default function Home() {
   ))}
 </List>
       </Container>
-    </div>
   );
 }
