@@ -22,20 +22,21 @@ interface PantryItem {
   id: string;
   name: string;
   quantity: string;
+  price?: string; // Include price field
   imageUrl?: string;
   userId: string;
 }
 
 interface NewItemState {
-  [x: string]: unknown;
   name: string;
   quantity: string;
+  price: string; // Include price field
   image: File | null;
 }
 
 export default function Home() {
   const [items, setItems] = useState<PantryItem[]>([]);
-  const [newItem, setNewItem] = useState<NewItemState>({ name: '', quantity: '', price:'', image: null });
+  const [newItem, setNewItem] = useState<NewItemState>({ name: '', quantity: '', price: '', image: null });
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -90,14 +91,15 @@ export default function Home() {
           imageUrl = await getDownloadURL(imageRef);
         }
 
-        const docRef = await addDoc(collection(db, 'pantryItems'), {
+        await addDoc(collection(db, 'pantryItems'), {
           name: newItem.name,
           quantity: newItem.quantity,
+          price: newItem.price, // Add price field
           imageUrl,
           userId: user.uid,
         });
 
-        setNewItem({ name: '', quantity: '', image: null });
+        setNewItem({ name: '', quantity: '', price: '', image: null });
         fetchItems(user.uid);
       } catch (error) {
         console.error('Error adding document: ', error);
@@ -108,11 +110,13 @@ export default function Home() {
   const editItem = async (item: PantryItem) => {
     const updatedName = prompt('Enter new name:', item.name);
     const updatedQuantity = prompt('Enter new quantity:', item.quantity);
-    if (updatedName && updatedQuantity) {
+    const updatedPrice = prompt('Enter new price (per unit):', item.price ?? '');
+    if (updatedName && updatedQuantity && updatedPrice) {
       try {
         await updateDoc(doc(db, 'pantryItems', item.id), {
           name: updatedName,
           quantity: updatedQuantity,
+          price: updatedPrice, // Update price field
         });
         if (user) fetchItems(user.uid);
       } catch (error) {
@@ -193,15 +197,15 @@ export default function Home() {
         variant="outlined"
       />
       <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '1.5rem' }}>
-  <Button variant="contained" component="label">
-    Upload Image
-    <input type="file" accept="image/*" hidden onChange={handleImageCapture} />
-  </Button>
-  
-  <Button variant="contained" color="primary" onClick={addItem} style={{ marginLeft: '1rem' }}>
-    Add Item
-  </Button>
-</div>
+        <Button variant="contained" component="label">
+          Upload Image
+          <input type="file" accept="image/*" hidden onChange={handleImageCapture} />
+        </Button>
+        
+        <Button variant="contained" color="primary" onClick={addItem} style={{ marginLeft: '1rem' }}>
+          Add Item
+        </Button>
+      </div>
       <List>
         {items.map((item) => (
           <ListItem key={item.id} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.7)', marginBottom: 1, borderRadius: 1 }}>
@@ -210,7 +214,7 @@ export default function Home() {
             </ListItemIcon>
             <ListItemText 
               primary={item.name} 
-              secondary={`Quantity: ${item.quantity}`} 
+              secondary={`Quantity: ${item.quantity} | Price: ${item.price}`} 
             />
             {item.imageUrl && (
               <img src={item.imageUrl} alt={item.name} style={{ width: 50, height: 50, marginLeft: '10px', borderRadius: '5px' }} />
