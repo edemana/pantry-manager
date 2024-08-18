@@ -20,7 +20,7 @@ const theme = createTheme({
           margin: 0,
           padding: 0,
           minHeight: '100vh',
-          overflow: 'hidden',
+          overflow: 'relative',
           '::before': {
             content: '""',
             position: 'absolute',

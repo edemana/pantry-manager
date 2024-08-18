@@ -27,6 +27,7 @@ interface PantryItem {
 }
 
 interface NewItemState {
+  [x: string]: unknown;
   name: string;
   quantity: string;
   image: File | null;
@@ -34,7 +35,7 @@ interface NewItemState {
 
 export default function Home() {
   const [items, setItems] = useState<PantryItem[]>([]);
-  const [newItem, setNewItem] = useState<NewItemState>({ name: '', quantity: '', image: null });
+  const [newItem, setNewItem] = useState<NewItemState>({ name: '', quantity: '', price:'', image: null });
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -179,6 +180,14 @@ export default function Home() {
         label="Quantity"
         value={newItem.quantity}
         onChange={(e) => setNewItem({ ...newItem, quantity: e.target.value })}
+        fullWidth
+        margin="normal"
+        variant="outlined"
+      />
+      <TextField
+        label="Price (per unit)"
+        value={newItem.price}
+        onChange={(e) => setNewItem({ ...newItem, price: e.target.value })}
         fullWidth
         margin="normal"
         variant="outlined"
